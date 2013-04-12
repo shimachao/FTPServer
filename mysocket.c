@@ -24,7 +24,7 @@ int listen_socket(in_addr_t ip,int backlog)
 	return listenfd;
 }
 
-inline void print_error_location(void)
+void print_error_location(void)
 {
-	fprintf(stderr,"error location:%s,%s,%d,",__FILE__,__FUNCTION__,__LINE__);
+	fprintf(stderr,"-->%s,%s,%d,",__FILE__,__FUNCTION__,__LINE__);
 }
