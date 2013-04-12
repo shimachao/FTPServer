@@ -8,6 +8,7 @@
 #include <strings.h>
 #include <unistd.h>
 #include <string.h>
-int tcpServerSocket(in_addr_t ip,in_port_t port,struct sockaddr_in *clientaddr);
-
+#include <errno.h>
+int listen_socket(in_addr_t ip,int backlog);
+void print_error_location(void);
 #endif
