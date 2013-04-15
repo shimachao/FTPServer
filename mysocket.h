@@ -9,6 +9,6 @@
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
+#include "myerror.h"
 int listen_socket(in_addr_t ip,int backlog);
-void print_error_location(void);
 #endif
