@@ -7,5 +7,5 @@
 	fprintf(stderr,"-->%s,%s,%d,",__FILE__,__FUNCTION__,__LINE__);
 }
 */
-#define print_error_location() 	fprintf(stderr,"-->%s,%s,%d,",__FILE__,__FUNCTION__,__LINE__);
+#define print_error_location() 	fprintf(stderr,"-->%s,%s,%d,",__FILE__,__FUNCTION__,__LINE__)
 #endif
