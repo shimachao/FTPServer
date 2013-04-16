@@ -37,7 +37,7 @@ int main()
 			fprintf(stderr,"	%s,%s,%d line. ",__FILE__,__FUNCTION__,__LINE__);
 			perror("accept wrong!");
 			return -1;
-			continue;
+//			continue;
 		}
 		//create a thread to recv file from client
 		pthread_t tid;

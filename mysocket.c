@@ -1,7 +1,7 @@
 #include "mysocket.h"
 int listen_socket(in_addr_t ip,int backlog)
 {
-	int listenfd = socket(AF_INET,SOCK_STREAM,0);
+	int listenfd = socket(AF_INET,SOCK_STREAM,IPPROTO_TCP);
 	if(-1 == listenfd)
 	{
 		print_error_location();
