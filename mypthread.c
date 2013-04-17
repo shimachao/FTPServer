@@ -5,7 +5,7 @@ void *file_recv(void *arg)
 	int commandfd = p->acceptfd;
 	//create server data socket
 	struct in_addr ip;
-	if(0 == inet_aton("192.168.222",&ip))
+	if(0 == inet_aton("192.168.1.242",&ip))
 	{
 		print_error_location();
 		perror("ip is wrong!\n");
@@ -31,6 +31,8 @@ void *file_recv(void *arg)
 	}
 	char *pbuf = (char*)malloc(sizeof(in_addr_t)+sizeof(in_port_t));
 	bzero(pbuf,sizeof(in_addr_t)+sizeof(in_port_t));
+	memcpy(pbuf,&(addr.sin_addr.s_addr),sizeof(in_addr_t));
+	memcpy(pbuf+sizeof(in_addr_t),&(addr.sin_port),sizeof(in_port_t));
 	//send to client
 	if(send(commandfd,pbuf,sizeof(in_addr_t)+sizeof(in_port_t),0) == -1)
 	{

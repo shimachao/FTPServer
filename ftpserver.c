@@ -5,7 +5,7 @@ int main()
 {
 	//waiting for transfer requsets from clients
 	struct in_addr ip;
-	if(0 == inet_aton("192.168.1.222",&ip))
+	if(0 == inet_aton("192.168.1.242",&ip))
 	{
 		print_error_location();
 		perror("ip is wrong!\n");
@@ -50,6 +50,7 @@ int main()
 		//create a thread to recv file from client
 		pthread_t tid;
 		PAR_TO_THREAD *p = (PAR_TO_THREAD*)malloc(sizeof(PAR_TO_THREAD));
+		p->acceptfd = acceptfd;
 		int err = pthread_create(&tid,NULL,file_recv,(void*)p);
 		if(0 != err)
 		{
