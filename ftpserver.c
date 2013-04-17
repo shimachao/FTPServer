@@ -11,13 +11,14 @@ int main()
 		perror("ip is wrong!\n");
 		return -1;
 	}
-	int listenfd = listen_socket(ip.s_addr,100);
+	int listenfd = listen_socket(ip.s_addr,5);
 	if(-1 == listenfd)
 	{
 		print_error_location();
 		return -1;
 	}
 	//print addr 
+	
 	struct sockaddr_in addr;
 	socklen_t addrlen = sizeof(addr);
 	bzero(&addr,addrlen);
@@ -27,16 +28,24 @@ int main()
 		return -1;
 	}
 	printf("ip addr is :%s,port:%d\n",inet_ntoa(addr.sin_addr),ntohs(addr.sin_port));
-
+	
+	struct sockaddr_in clientaddr;
+	socklen_t clientaddrlen = sizeof(clientaddr);
+	bzero(&clientaddr,clientaddrlen);
 	//accept a connect requset 
 	while(1)
 	{
-		int acceptfd = accept(listenfd,NULL,NULL);
+		int acceptfd = accept(listenfd,(struct sockaddr*)&clientaddr,&clientaddrlen);
 		if(-1 == acceptfd)
 		{
+			if(errno == EINTR)
+			{
+				continue;
+			}
+			
 			print_error_location();
 			perror("accept wrong!\n");
-			continue;
+			return -1;
 		}
 		//create a thread to recv file from client
 		pthread_t tid;
