@@ -48,6 +48,7 @@ int main()
 			return -1;
 		}
 		//create a thread to recv file from client
+		printf("receive a connect!\n");
 		pthread_t tid;
 		PAR_TO_THREAD *p = (PAR_TO_THREAD*)malloc(sizeof(PAR_TO_THREAD));
 		p->acceptfd = acceptfd;

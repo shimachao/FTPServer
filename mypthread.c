@@ -1,6 +1,7 @@
 #include "mypthread.h"
 void *file_recv(void *arg)
 {
+	pthread_detach(pthread_self());
 	PAR_TO_THREAD *p = (PAR_TO_THREAD*)arg;
 	int commandfd = p->acceptfd;
 	//create server data socket
@@ -50,7 +51,7 @@ void *file_recv(void *arg)
 		return NULL;
 	}
 	//data channel connected,begin receive file data
-	FILE *fp = fopen("/char/test.avi","wb");
+	FILE *fp = fopen("./test.avi","w");
 	if(NULL == fp)
 	{
 		print_error_location();
@@ -60,6 +61,8 @@ void *file_recv(void *arg)
 		close(commandfd);
 		return NULL;
 	}
+	printf("data channel connected success!\naeceiving video file data...\n");
+
 	char buf[1024];
 	ssize_t readlen;
 	while((readlen =read(datafd,(void*)buf,1024)) != 0)
@@ -76,6 +79,7 @@ void *file_recv(void *arg)
 	close(datafd);
 	close(listenfd);
 	close(commandfd);
+	printf("receive file success!\n");
 	return NULL;
 }
 
