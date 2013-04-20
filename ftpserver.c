@@ -5,7 +5,7 @@ int main()
 {
 	//waiting for transfer requsets from clients
 	struct in_addr ip;
-	if(0 == inet_aton("192.168.1.242",&ip))
+	if(0 == inet_aton("121.199.24.119",&ip))
 	{
 		print_error_location();
 		perror("ip is wrong!\n");
