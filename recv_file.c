@@ -68,6 +68,8 @@ void *file_recv(void *arg)
 
 void *data_channel(void *arg)
 {
+	pthread_detach(pthread_self());
+	
 	PAR_TO_DATACHANNEL *p =(PAR_TO_DATACHANNEL*) arg;
 	int datafd = p->datafd;
 	free(p);
