@@ -1,5 +1,6 @@
 #include "mysocket.h"
 #include "mypthread.h"
+#include "myerror.h"
 #include <stdlib.h>
 int main()
 {
