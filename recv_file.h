@@ -8,6 +8,11 @@
 typedef struct PAR_TO_THREAD{
 	int acceptfd;
 }PAR_TO_THREAD;
-void *file_recv(void *arg);
 
+typedef struct PAR_TO_DATACHANNEL{
+	int datafd;
+}PAR_TO_DATACHANNEL;
+
+void *file_recv(void *arg);
+void *data_channel(void *arg);
 #endif

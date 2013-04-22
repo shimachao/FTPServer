@@ -1,4 +1,4 @@
-#include "mypthread.h"
+#include "recv_file.h"
 void *file_recv(void *arg)
 {
 	pthread_detach(pthread_self());
@@ -6,7 +6,7 @@ void *file_recv(void *arg)
 	int commandfd = p->acceptfd;
 	//create server data socket
 	struct in_addr ip;
-	if(0 == inet_aton("192.168.1.242",&ip))
+	if(0 == inet_aton("121.199.24.119",&ip))
 	{
 		print_error_location();
 		perror("ip is wrong!\n");
@@ -50,36 +50,54 @@ void *file_recv(void *arg)
 		perror("data socket error!");
 		return NULL;
 	}
-	//data channel connected,begin receive file data
-	FILE *fp = fopen("./girl.mkv","w");
-	if(NULL == fp)
+	//TODO-->用户验证，证明是特定用户发来的数据连接
+	//create a thread for data channel	
+	pthread_t tid;
+	PAR_TO_DATACHANNEL *arg2 = malloc(sizeof(PAR_TO_DATACHANNEL));
+	arg2->datafd = datafd;
+	if(0 != pthread_create(&tid,NULL,data_channel,(void*)arg2))
 	{
 		print_error_location();
-		perror("fopen test.avr fialed!\n");
+		perror("create data channel fialed!");
 		close(datafd);
 		close(listenfd);
 		close(commandfd);
+	}	
+	return NULL;
+}
+
+void *data_channel(void *arg)
+{
+	PAR_TO_DATACHANNEL *p =(PAR_TO_DATACHANNEL*) arg;
+	int datafd = p->datafd;
+	free(p);
+	p = NULL;
+	FILE *fp = fopen("/root/chao/user_video/test.mp4","wb");	
+	if(NULL == fp)
+	{
+		print_error_location();
+		perror("fopen failed!");
+		close(datafd);
 		return NULL;
 	}
-	printf("data channel connected success!\naeceiving video file data...\n");
 
+	printf("recving data...\n");
 	char buf[1024];
-	ssize_t readlen;
-	while((readlen =read(datafd,(void*)buf,1024)) != 0)
+	ssize_t readlen = 0;
+	while((readlen = read(datafd,(void*)buf,1024)) != 0)
 	{
 		if(readlen == -1)
 		{
 			print_error_location();
-			perror("read data from datasocket error!\n");
+			perror("read data from datafd error!\n");
 			break;
 		}
 		fwrite(buf,sizeof(char),readlen,fp);
 	}
+
 	fclose(fp);
 	close(datafd);
-	close(listenfd);
-	close(commandfd);
-	printf("receive file success!\n");
+	printf("rececive data over!\n");
+
 	return NULL;
 }
-
