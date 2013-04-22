@@ -51,7 +51,7 @@ void *file_recv(void *arg)
 		return NULL;
 	}
 	//data channel connected,begin receive file data
-	FILE *fp = fopen("./test.avi","w");
+	FILE *fp = fopen("./girl.mkv","w");
 	if(NULL == fp)
 	{
 		print_error_location();

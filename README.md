@@ -1,4 +1,0 @@
-FTPServer
-=========
-
-FTP Server code
