@@ -74,7 +74,7 @@ void *data_channel(void *arg)
 	int datafd = p->datafd;
 	free(p);
 	p = NULL;
-	FILE *fp = fopen("/root/chao/user_video/test.mp4","wb");	
+	FILE *fp = fopen("/var/videohome/test.mp4","wb");	
 	if(NULL == fp)
 	{
 		print_error_location();
