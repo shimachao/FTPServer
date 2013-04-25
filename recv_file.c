@@ -1,9 +1,12 @@
 #include "recv_file.h"
+#include "access_to_mysql.h"
+
 void *file_recv(void *arg)
 {
 	pthread_detach(pthread_self());
 	PAR_TO_THREAD *p = (PAR_TO_THREAD*)arg;
 	int commandfd = p->acceptfd;
+	//verify user passworld 
 	//create server data socket
 	struct in_addr ip;
 	if(0 == inet_aton("121.199.24.119",&ip))

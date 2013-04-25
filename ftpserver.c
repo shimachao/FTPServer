@@ -4,6 +4,12 @@
 #include <stdlib.h>
 int main()
 {
+	//init and connect to mysql
+	if(init_connect_mysql() <0 )
+	{
+		fprintf(stderr,"connect to mysql error!\n");
+		return -1;
+	}
 	//waiting for transfer requsets from clients
 	struct in_addr ip;
 	if(0 == inet_aton("121.199.24.119",&ip))
