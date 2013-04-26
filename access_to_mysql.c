@@ -12,7 +12,7 @@ int init_connect_mysql()
 {
 	mysql_init(&my_connection);
 	if(NULL == mysql_real_connect(&my_connection,"localhost","root",
-									"","foo",0,NULL,0))
+									"","test",0,NULL,0))
 	{
 		fprintf(stderr,"connection failed\n");
 		if(mysql_error(&my_connection))
@@ -30,7 +30,7 @@ int user_verify(char *email,char *password)
 {	
 	assert(email != NULL && password != NULL) ;
 	
-	char query[512] = {"SELECT user_pass FROM test where user_email = \0"};
+	char query[512] = {"SELECT user_pass FROM vl_user where user_email = \0"};
 	strcat(query,email);
 	int res = mysql_query(&my_connection,query);
 	if(0 != res)
@@ -75,9 +75,9 @@ int user_verify(char *email,char *password)
 
 int insert_video_record(char *name,int userid)
 {
-	char query[512] = {"INSERT INTO v1_video(video_name, video_author) VALUES "};
+	char query[512] = {"INSERT INTO vl_video(video_name, video_author) VALUES \0"};
 	char value[512] = {'\0'};
-	sprintf(value,"(%s, %d)",name,userid);
+	sprintf(value,"('%s', %d)",name,userid);
 	strcat(query,value);
 	if (0 != mysql_query(&my_connection,query))
 	{
