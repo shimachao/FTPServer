@@ -68,3 +68,23 @@ int user_verify(char *email,char *password)
 	}
 	return -1;
 }
+
+int insert_video_record(char *name,int userid)
+{
+	char query[512] = {"INSERT INTO v1_video(video_name, video_author) VALUES "};
+	char value[512] = {'\0'};
+	sprintf(value,"(%s, %d)",name,userid);
+	strcat(query,value);
+	if (0 != mysql_query(&my_connection,query))
+	{
+		fprintf(stderr,"insert video record error!");
+		if(mysql_error(&my_connection))
+		{
+			fprintf(stderr,"mysql error %d: %s\n",
+							mysql_errno(&my_connection),
+							mysql_error(&my_connection));
+		}
+		return -1;
+	}
+	return 0;
+}

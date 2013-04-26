@@ -1,6 +1,6 @@
 #include "recv_file.h"
 #include "access_to_mysql.h"
-
+#include "random_name.h"
 void *file_recv(void *arg)
 {
 	pthread_detach(pthread_self());
@@ -77,12 +77,19 @@ void *data_channel(void *arg)
 	int datafd = p->datafd;
 	free(p);
 	p = NULL;
-	FILE *fp = fopen("/var/videohome/test.mp4","wb");	
+	char *filename = random_name(".avi");
+	char *fullpath = (char*)malloc(strlen("/var/videohome/")+strlen(filename)+1);
+	bzero(fullpath,strlen("/var/videohome/")+strlen(filename)+1);
+	strcpy(fullpath,"/var/videohome/");
+	strcat(fullpath,filename);
+	FILE *fp = fopen(fullpath,"wb");	
 	if(NULL == fp)
 	{
 		print_error_location();
 		perror("fopen failed!");
 		close(datafd);
+		free(filename);
+		free(fullpath);
 		return NULL;
 	}
 
@@ -99,9 +106,12 @@ void *data_channel(void *arg)
 		}
 		fwrite(buf,sizeof(char),readlen,fp);
 	}
+	insert_video_record(filename,1);
 
 	fclose(fp);
 	close(datafd);
+	free(filename);
+	free(fullpath);
 	printf("rececive data over!\n");
 
 	return NULL;
