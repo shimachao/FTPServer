@@ -4,6 +4,7 @@
 #include <string.h>
 #include "access_to_mysql.h"
 #include "mysql.h"
+#include "md5_encrypt.h"
 
 MYSQL my_connection;
 
@@ -11,7 +12,7 @@ int init_connect_mysql()
 {
 	mysql_init(&my_connection);
 	if(NULL == mysql_real_connect(&my_connection,"localhost","root",
-									"vlwzy2012","foo",0,NULL,0))
+									"","foo",0,NULL,0))
 	{
 		fprintf(stderr,"connection failed\n");
 		if(mysql_error(&my_connection))
@@ -62,10 +63,13 @@ int user_verify(char *email,char *password)
 		return -1;
 	}
 	MYSQL_ROW sqlrow = mysql_fetch_row(res_ptr);
-	if(strcmp(password,sqlrow[0]))
-	{
+	char *passwordmd5 = md5_encrypt(password);
+	if(strcmp(passwordmd5,sqlrow[0]))
+	{	
+		free(passwordmd5);
 		return 0;
 	}
+	free(passwordmd5);
 	return -1;
 }
 
